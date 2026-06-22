@@ -1,0 +1,33 @@
+application:
+  name: appsmith
+  pods:
+  - name: app
+    image: appsmith/appsmith-ce:latest
+    path: /
+    servicePorts:
+    - 80
+    vars:
+      APPSMITH_ENCRYPTION_PASSWORD: "a1b2c3d4e5f6a1b2"
+      APPSMITH_ENCRYPTION_SALT: "e5f6a1b2c3d4e5f6"
+      APPSMITH_MONGODB_URI: "mongodb://mongo.pod:27017/appsmith"
+      APPSMITH_REDIS_URL: "redis://redis.pod:6379"
+    volumes:
+    - name: appsmith-data
+      mountPath: /appsmith-stacks
+      size: 10Gi
+  - name: mongo
+    image: mongo:5
+    servicePorts:
+    - 27017
+    volumes:
+    - name: appsmith-mongo
+      mountPath: /data/db
+      size: 5Gi
+  - name: redis
+    image: redis:7-alpine
+    servicePorts:
+    - 6379
+    volumes:
+    - name: appsmith-redis
+      mountPath: /data
+      size: 2Gi
